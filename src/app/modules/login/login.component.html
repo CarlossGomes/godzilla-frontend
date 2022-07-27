@@ -1,5 +1,38 @@
-<span class="p-float-label">
-    <input id="float-input" type="text" pInputText>
-    <label for="float-input">E-mail</label>
-</span>
-<p-password [toggleMask]="true"></p-password>
+<div class="card">
+    <form [formGroup]="form">
+        <div class="flex justify-content-center">
+            <div class="border-1 surface-border surface-card border-round py-7 px-4 md:px-7 z-1 m-8">
+                <div class="w-15rem">
+                    <div class="field">
+                        <label for="email">E-mail</label>
+                        <input id="email" type="text" pInputText class="w-full" formControlName="email">
+                        <div *ngIf="email?.dirty || email?.touched">
+                            <small *ngIf="email?.errors?.['required']" id="name-help" class="p-error">Favor insira um
+                                e-mail
+                                válido.</small>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="password">Password</label>
+                        <p-password id="password" [toggleMask]="true" [feedback]="false" class="w-full"
+                            styleClass="p-password p-component p-inputwrapper p-input-icon-right"
+                            formControlName="password">
+                        </p-password>
+                        <div *ngIf="password?.dirty || password?.touched">
+                            <small *ngIf="password?.errors?.['required']" id="name-help" class="p-error">Favor insira
+                                uma senha válida.</small>
+                        </div>
+                    </div>
+                    <div class="field text-center">
+                        <button pButton pRipple type="button" label="Logar" class="w-full" (click)="login()"></button>
+                    </div>
+                    <p-divider></p-divider>
+                    <div class="field text-center">
+                        <button pButton pRipple type="button" label="Criar nova conta" class="p-button-success w-full"
+                            (click)="goToCreateNewAccount()"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
