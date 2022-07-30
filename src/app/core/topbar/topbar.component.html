@@ -1,0 +1,12 @@
+<p-sidebar [(visible)]="display">
+</p-sidebar>
+<p-menubar [model]="items">
+    <ng-template pTemplate="start">
+        <button pButton pRipple type="button" class="mr-2 p-button-rounded p-button-secondary p-button-text"
+            icon="pi pi-bars" (click)="openSidebar()"></button>
+    </ng-template>
+    <ng-template pTemplate="end">
+        <button pButton pRipple type="button" class="mr-2 p-button-rounded p-button-secondary p-button-text"
+            icon="pi pi-sign-out" (click)="logout()"></button>
+    </ng-template>
+</p-menubar>

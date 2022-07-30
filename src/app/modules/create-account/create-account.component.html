@@ -15,7 +15,7 @@
                         <label for="email">E-mail</label>
                         <input id="email" type="text" aria-describedby="email-help" pInputText class="w-full"
                             formControlName="email">
-                        <small *ngIf="emailUnavailabel" id="email-help" class="p-error">E-mail não disponível.</small>
+                        <small *ngIf="emailUnavailable" id="email-help" class="p-error">E-mail não disponível.</small>
                         <div *ngIf="email?.dirty || email?.touched">
                             <small *ngIf="email?.errors?.['required']" id="email-help" class="p-error">Campo e-mail
                                 obrigatório.</small>

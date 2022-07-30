@@ -1,5 +1,5 @@
 <div class="card">
-    <form [formGroup]="form">
+    <form [formGroup]="form" (keyup.enter)="login()">
         <div class="flex justify-content-center">
             <div class="box-shadow border-1 surface-border surface-card border-round py-7 px-4 md:px-7 z-1 m-8">
                 <div class="w-15rem">
@@ -25,6 +25,9 @@
                     </div>
                     <div class="field text-center">
                         <button pButton pRipple type="button" label="Logar" class="w-full" (click)="login()"></button>
+                    </div>
+                    <div class="field text-center">
+                        <small *ngIf="isLoginInvalid" id="name-help" class="p-error">E-mail e/ou senha inválido.</small>
                     </div>
                     <p-divider></p-divider>
                     <div class="field text-center">

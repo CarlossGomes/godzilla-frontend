@@ -12,7 +12,7 @@ export class CreateAccountComponent implements OnInit {
 
   form!: FormGroup;
 
-  emailUnavailabel: boolean = false;
+  emailUnavailable: boolean = false;
 
   createSuccess: boolean = false;
 
@@ -41,11 +41,11 @@ export class CreateAccountComponent implements OnInit {
         success => {
           this.createSuccess = true;
           setTimeout(() => {
-            this.router.navigate([""]);
+            this.router.navigate(["login"]);
           }, 1200)
         },
         error => {
-          this.emailUnavailabel = error.error.includes('Já existe usuário com email:');
+          this.emailUnavailable = error.error.includes('Já existe usuário com email:');
         }
       )
     }

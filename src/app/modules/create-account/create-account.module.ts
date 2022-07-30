@@ -1,15 +1,15 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { DividerModule } from 'primeng/divider';
+import { FieldsetModule } from 'primeng/fieldset';
+import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
+import { PasswordModule } from 'primeng/password';
 import { CreateAccountRoutingModule } from './create-account-routing.module';
 import { CreateAccountComponent } from './create-account.component';
-import { FieldsetModule } from 'primeng/fieldset';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { PasswordModule } from 'primeng/password';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MessageModule } from 'primeng/message';
-import { DividerModule } from 'primeng/divider';
 
 
 @NgModule({
