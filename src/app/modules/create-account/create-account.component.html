@@ -1,5 +1,5 @@
 <div class="card">
-    <form [formGroup]="form">
+    <form [formGroup]="form" (keyup.enter)="createAccount()">
         <div class="flex justify-content-center">
             <div class="box-shadow border-1 surface-border surface-card border-round py-7 px-4 md:px-7 z-1 m-8">
                 <div class="w-15rem">
@@ -52,13 +52,18 @@
                         </div>
                     </div>
                     <div class="field text-center">
-                        <button pButton pRipple type="button" label="Cadastre-se" class="p-button-success w-full"
+                        <button pButton pRipple type="button" label="Cadastre-se" class="w-full"
                             (click)="createAccount()"></button>
                     </div>
                     <div class="field text-center">
                         <p-message *ngIf="createSuccess" severity="success" text="Usuário cadastrado!"
                             styleClass="mr-2">
                         </p-message>
+                    </div>
+                    <p-divider></p-divider>
+                    <div class="field text-center">
+                        <button pButton pRipple type="button" label="Login" class="p-button-success w-full"
+                            (click)="goToLogin()"></button>
                     </div>
                 </div>
             </div>

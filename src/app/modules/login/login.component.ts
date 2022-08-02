@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginService } from 'src/app/shared/services/login.service';
+import { AuthenticationService } from 'src/app/shared/services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private loginService: LoginService
+    private authenticationService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
@@ -27,8 +27,9 @@ export class LoginComponent implements OnInit {
   login() {
     this.form.markAllAsTouched();
     if (this.form.valid) {
-      this.loginService.login(this.form.value).subscribe(
+      this.authenticationService.login(this.form.value).subscribe(
         success => {
+          this.authenticationService.setUserSession(success);
           this.router.navigate(["home"]);
         },
         error => {

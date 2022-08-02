@@ -51,6 +51,10 @@ export class CreateAccountComponent implements OnInit {
     }
   }
 
+  goToLogin() {
+    this.router.navigate(["login"]);
+  }
+
   get name() { return this.form.get('name'); }
   get email() { return this.form.get('email'); }
   get password() { return this.form.get('password'); }

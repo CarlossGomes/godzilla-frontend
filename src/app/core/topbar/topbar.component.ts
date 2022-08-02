@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { MenuItem } from 'primeng/api';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AuthenticationService } from 'src/app/shared/services/authentication.service';
+import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
   selector: 'app-topbar',
@@ -9,43 +9,21 @@ import { MenuItem } from 'primeng/api';
 })
 export class TopbarComponent implements OnInit {
 
-  items!: MenuItem[];
 
-  home!: MenuItem;
+  @ViewChild(SidebarComponent, { static: false })
+  sidebarComponent!: SidebarComponent;
 
-  display: boolean = false;
-
-
-  constructor(private router: Router) { }
+  constructor(private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
-    this.initTopBar();
-  }
-
-  initTopBar() {
-    this.items = [
-      {
-        label: 'Home',
-        icon: 'pi pi-home',
-        routerLink: '/home'
-      },
-      // {
-      //   label: 'Edit',
-      //   icon: 'pi pi-fw pi-pencil',
-      //   items: [
-      //     { label: 'Delete', icon: 'pi pi-fw pi-trash' },
-      //     { label: 'Refresh', icon: 'pi pi-fw pi-refresh' }
-      //   ]
-      // }
-    ];
-  }
-
-  openSidebar() {
-    this.display = true;
   }
 
   logout() {
-    this.router.navigate(["login"]);
+    this.authenticationService.logout();
+  }
+
+  openSidebar(display: boolean) {
+    this.sidebarComponent.showSidebar();
   }
 
 }
