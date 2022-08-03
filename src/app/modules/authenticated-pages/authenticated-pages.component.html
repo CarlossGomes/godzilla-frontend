@@ -1,8 +1,9 @@
 <body>
-    <app-topbar></app-topbar>
+    <p-progressSpinner class="spinner-background" *ngIf="loading | async"></p-progressSpinner>
+    <div class="mb-3">
+        <app-topbar></app-topbar>
+    </div>
     <div>
-        <div>
-            <app-content></app-content>
-        </div>
+        <app-content></app-content>
     </div>
 </body>

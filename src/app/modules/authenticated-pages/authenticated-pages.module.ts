@@ -9,6 +9,7 @@ import { SidebarComponent } from 'src/app/core/sidebar/sidebar.component';
 import { TopbarComponent } from 'src/app/core/topbar/topbar.component';
 import { AuthenticatedPagesRoutingModule } from './authenticated-pages-routing.module';
 import { AuthenticatedPagesComponent } from './authenticated-pages.component';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { AuthenticatedPagesComponent } from './authenticated-pages.component';
     SidebarModule,
     ButtonModule,
     ToolbarModule,
+    ProgressSpinnerModule
   ],
   providers: [
   ]

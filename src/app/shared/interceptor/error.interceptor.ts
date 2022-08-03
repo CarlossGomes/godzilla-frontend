@@ -1,10 +1,7 @@
-import { Injectable } from '@angular/core';
 import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor
+  HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { AuthenticationService } from '../services/authentication.service';
 
@@ -18,8 +15,10 @@ export class ErrorInterceptor implements HttpInterceptor {
       if (err.status === 401) {
         this.authenticationService.logout();
       }
-      const error = err.error.message || err.statusText;
-      return throwError(error);
+      if (err && err.status === 422) {
+        return throwError(() => err);
+      }
+      return throwError(() => 'Erro inesperado do sistema!');
     }))
   }
 }

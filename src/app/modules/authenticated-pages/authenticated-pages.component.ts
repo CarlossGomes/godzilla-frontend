@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { SpinnerService } from 'src/app/shared/services/spinner.service';
 
 @Component({
   selector: 'app-authenticated-pages',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AuthenticatedPagesComponent implements OnInit {
 
-  constructor() { }
+  public loading = this.spinnerService.loading;
+
+  constructor(private spinnerService: SpinnerService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewChecked() {
+    this.cdr.detectChanges();
   }
 
 }

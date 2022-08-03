@@ -28,6 +28,10 @@ export class AuthenticationService {
     return this._http.post<any>(this._urlBase, login);
   }
 
+  checkToken() {
+    return this._http.get(`${environment.API}auth/check-token`);
+  }
+
   logout() {
     localStorage.removeItem('userSession');
     this.router.navigate(["login"]);

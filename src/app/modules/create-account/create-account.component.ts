@@ -14,6 +14,8 @@ export class CreateAccountComponent implements OnInit {
 
   emailUnavailable: boolean = false;
 
+  emailInvalid: boolean = false;
+
   createSuccess: boolean = false;
 
   constructor(
@@ -45,10 +47,15 @@ export class CreateAccountComponent implements OnInit {
           }, 1200)
         },
         error => {
-          this.emailUnavailable = error.error.includes('Já existe usuário com email:');
+          this.handlerError(error);
         }
       )
     }
+  }
+
+  handlerError(error: any) {
+    this.emailUnavailable = error.error.includes('Já existe usuário com email:');
+    this.emailInvalid = error.error.includes('E-mail inválido!');
   }
 
   goToLogin() {
