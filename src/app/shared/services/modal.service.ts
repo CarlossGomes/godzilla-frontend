@@ -8,5 +8,7 @@ export class ModalService {
 
   ref?: DynamicDialogRef;
 
+  entity: any;
+
   constructor() { }
 }

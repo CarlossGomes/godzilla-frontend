@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Produto } from 'src/app/shared/models/Produto';
 import { ModalService } from 'src/app/shared/services/modal.service';
@@ -13,15 +13,17 @@ import { CadastrarProdutoComponent } from '../cadastrar/cadastrar-produto.compon
 })
 export class ConsultarProdutoComponent implements OnInit {
 
-  display: boolean = false;
-
   produtos!: Produto[];
 
-  pagina: number = 1;
+  page: number = 1;
 
-  tamanhoPagina: number = 10;
+  first: number = 0;
 
-  totalItens: number = 10;
+  last: number = 9;
+
+  rows: number = 10;
+
+  totalRecords: number = 10;
 
   ref!: DynamicDialogRef;
 
@@ -29,27 +31,49 @@ export class ConsultarProdutoComponent implements OnInit {
     private produtoService: ProdutoService,
     private messageService: MessageService,
     public dialogService: DialogService,
-    public modalService: ModalService
+    public modalService: ModalService,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit(): void {
     this.pesquisar();
   }
 
-  pesquisar() {
-    this.produtoService.pesquisar({}, this.pagina, this.tamanhoPagina).subscribe(
-      success => {
+  pesquisar(event?: LazyLoadEvent) {
+    if (event) {
+      this.first = event.first!;
+      this.rows = event.rows!;
+    }
+    this.page = (this.first / this.rows) + 1;
+    this.produtoService.pesquisar({}, this.page, this.rows).subscribe({
+      next: (success: any) => {
         this.produtos = success.content;
+        this.totalRecords = success.totalElements;
+        this.first = ((this.page - 1) * this.rows);
+        this.last = (this.page * this.rows) - 1;
       },
-      error => {
-        this.messageService.add({ severity: 'error', detail: error.error });
+      error: (err: any) => {
+        this.messageService.add({ severity: 'error', detail: err.error });
       }
-    )
+    })
   }
 
-  showDialog() {
+  deletar(produto: Produto) {
+    this.produtoService.delete(produto.id).subscribe({
+      complete: () => {
+        this.messageService.add({ severity: 'success', detail: 'Produto deletado com sucesso', life: 3000 });
+        this.pesquisar();
+      },
+      error: (err: any) => {
+        this.messageService.add({ severity: 'error', detail: err.error });
+      }
+    })
+  }
+
+  editarProduto(produto: Produto) {
+    this.modalService.entity = produto;
     this.modalService.ref = this.dialogService.open(CadastrarProdutoComponent, {
-      header: 'Choose a Product',
+      header: 'Editar Produto',
       width: '70%',
       contentStyle: { "max-height": "500px", "overflow": "auto" },
       baseZIndex: 10000
@@ -59,8 +83,31 @@ export class ConsultarProdutoComponent implements OnInit {
     });
   }
 
-  hideDialog() {
-    this.display = false;
+  deletarProduto(produto: Produto) {
+    console.log(produto)
+    this.confirmationService.confirm({
+      message: 'Tem certeza de que deseja excluir ' + produto.descricao + '?',
+      header: ' ',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
+      acceptButtonStyleClass: 'p-button-danger',
+      accept: () => {
+        this.deletar(produto);
+      }
+    });
+  }
+
+  showDialog() {
+    this.modalService.ref = this.dialogService.open(CadastrarProdutoComponent, {
+      header: 'Cadastrar Produto',
+      width: '70%',
+      contentStyle: { "max-height": "500px", "overflow": "auto" },
+      baseZIndex: 10000
+    });
+    this.modalService.ref.onClose.subscribe(() => {
+      this.pesquisar();
+    });
   }
 
 }

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { Produto } from 'src/app/shared/models/Produto';
 import { ModalService } from 'src/app/shared/services/modal.service';
 import { ProdutoService } from 'src/app/shared/services/produto.service';
 
@@ -10,9 +11,11 @@ import { ProdutoService } from 'src/app/shared/services/produto.service';
   templateUrl: './cadastrar-produto.component.html',
   styleUrls: ['./cadastrar-produto.component.css']
 })
-export class CadastrarProdutoComponent implements OnInit {
+export class CadastrarProdutoComponent implements OnInit, OnDestroy {
 
   form!: FormGroup;
+
+  produto: Produto = this.modalService.entity;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -22,31 +25,52 @@ export class CadastrarProdutoComponent implements OnInit {
     private modalService: ModalService
   ) { }
 
+  ngOnDestroy(): void {
+    this.modalService.entity = null;
+  }
+
   ngOnInit(): void {
     this.initForm();
   }
 
   initForm() {
+    let produto = this.produto;
     this.form = this.formBuilder.group({
-      descricao: [null, Validators.required],
-      quantidade: [null, Validators.required],
-      valor: [null, [Validators.required]],
-      margem: [null, [Validators.required]]
+      id: [produto ? produto.id : null],
+      descricao: [produto ? produto.descricao : null, Validators.required],
+      quantidade: [produto ? produto.quantidade : null, Validators.required],
+      valor: [produto ? produto.valor : null, [Validators.required]],
+      margem: [produto ? produto.margem : null, [Validators.required]]
     })
   }
 
   cadastrarProduto() {
     this.form.markAllAsTouched();
     if (this.form.valid) {
-      this.produtoService.create(this.form.value).subscribe(
-        success => {
-          this.messageService.add({ severity: 'success', detail: 'Produto cadastrado com sucesso.' });
+      this.produtoService.create(this.form.value).subscribe({
+        complete: () => {
+          this.messageService.add({ severity: 'success', detail: 'Produto cadastrado com sucesso.', life: 3000 });
           this.modalService.ref!.close();
         },
-        error => {
-          this.messageService.add({ severity: 'error', detail: error.error });
+        error: (err: any) => {
+          this.messageService.add({ severity: 'error', detail: err.error });
         }
-      )
+      })
+    }
+  }
+
+  editarProduto() {
+    this.form.markAllAsTouched();
+    if (this.form.valid) {
+      this.produtoService.edit(this.produto.id, this.form.value).subscribe({
+        complete: () => {
+          this.messageService.add({ severity: 'success', detail: 'Produto editado com sucesso.', life: 3000 });
+          this.modalService.ref!.close();
+        },
+        error: (err: any) => {
+          this.messageService.add({ severity: 'error', detail: err.error });
+        }
+      })
     }
   }
 

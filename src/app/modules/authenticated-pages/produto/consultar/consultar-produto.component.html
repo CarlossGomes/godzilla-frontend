@@ -1,14 +1,19 @@
+<p-confirmDialog></p-confirmDialog>
 <p-card styleClass="pcard">
     <p class="text-center text-3xl m-auto font-bold">Consultar Produtos</p>
-    <p-table [value]="produtos" styleClass="p-datatable-striped" responsiveLayout="scroll">
+    <p-table [rowHover]="true" (onLazyLoad)="pesquisar($event)" [lazy]="true" [resizableColumns]="true" [value]="produtos"
+        [paginator]="true" [rows]="rows" [first]="first" [totalRecords]="totalRecords" [showCurrentPageReport]="false"
+        responsiveLayout="scroll" currentPageReportTemplate="{totalRecords} registros" [rowsPerPageOptions]="[10,25,50]"
+        styleClass="p-datatable-striped" responsiveLayout="scroll">
         <ng-template pTemplate="caption">
             <div class="grid">
                 <div class="flex justify-content-start col">
-                    <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-raised" (click)="showDialog()"></button>
+                    <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-text"
+                        (click)="showDialog()"></button>
                 </div>
                 <div class="flex justify-content-end col-1">
                     <span class="p-input-icon-left">
-                        <i class="pi pi-search"></i>
+                        <i class="pi pi-search cursor-pointer"></i>
                         <input pInputText type="text" placeholder="Pesquisar..." />
                     </span>
                 </div>
@@ -21,20 +26,28 @@
                 <th>Margem</th>
                 <th>Valor</th>
                 <th>Quantidade</th>
+                <th></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-produto>
             <tr>
                 <td>{{produto.id}}</td>
                 <td>{{produto.descricao}}</td>
-                <td>{{produto.margem}}</td>
+                <td>{{produto.margem}}%</td>
                 <td>{{produto.valor | currency:'BRL'}}</td>
                 <td>{{produto.quantidade}}</td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-text p-button-info mr-1"
+                        (click)="editarProduto(produto)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-text p-button-danger"
+                        (click)="deletarProduto(produto)"></button>
+                </td>
             </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-end">
+                No total há {{totalRecords}} produtos.
+            </div>
         </ng-template>
     </p-table>
 </p-card>
-
-<p-dialog header="Cadastrar Produto" [(visible)]="display" [modal]="true">
-    <app-cadastrar-produto></app-cadastrar-produto>
-</p-dialog>

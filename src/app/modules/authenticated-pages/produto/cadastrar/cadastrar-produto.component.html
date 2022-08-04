@@ -45,7 +45,9 @@
     <div class="flex justify-content-end col">
         <button pButton pRipple type="button" label="Limpar" class="p-button-danger p-button-raised mr-2"
             (click)="limpar()"></button>
-        <button pButton pRipple type="button" label="Cadastrar" class="p-button-success p-button-raised"
-            (click)="cadastrarProduto()"></button>
+        <button *ngIf="!produto" pButton pRipple type="button" label="Cadastrar"
+            class="p-button-info p-button-raised" (click)="cadastrarProduto()"></button>
+        <button *ngIf="produto" pButton pRipple type="button" label="Salvar" class="p-button-info p-button-raised"
+            (click)="editarProduto()"></button>
     </div>
 </div>
