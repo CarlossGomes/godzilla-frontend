@@ -25,12 +25,12 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    this.router.navigate(["home"]);
     this.form.markAllAsTouched();
     if (this.form.valid) {
       this.authenticationService.login(this.form.value).subscribe(
         success => {
           this.authenticationService.setUserSession(success);
-          this.router.navigate(["home"]);
         },
         error => {
           this.isLoginInvalid = true;

@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Page } from '../models/Page';
 import { CrudOperations } from '../util/crud.operations';
+import HttpUtil from '../util/HttpUtil';
 
 @Injectable({
   providedIn: 'root'
@@ -24,5 +26,11 @@ export abstract class CrudService<T, ID> implements CrudOperations<T, ID> {
   }
   getById(id: ID): Observable<T> {
     return this._http.get<T>(this._url + "/" + id);
+  }
+
+  pesquisar(filtros: {}, pagina: number, tamanhoPagina: number, sort?: string): Observable<Page> {
+    let queryFiltros = HttpUtil.getQueryParams(filtros);
+    let querySort = sort ? `&sort=${sort}` : '';
+    return this._http.get<Page>(`${this._url}?${queryFiltros}&page=${pagina - 1}&size=${tamanhoPagina}${querySort}`)
   }
 }

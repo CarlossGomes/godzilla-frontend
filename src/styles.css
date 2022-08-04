@@ -2,3 +2,14 @@
 .box-shadow {
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
+
+.topbar{
+    /* margin-top: -10px;
+    margin-left: -19px;
+    margin-right: -16px; */
+    margin: -7px -16px ;
+}
+
+.pcard{
+    margin: 0px -16px;
+  }

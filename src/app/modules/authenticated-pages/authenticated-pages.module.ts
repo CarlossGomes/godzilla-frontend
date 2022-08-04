@@ -10,6 +10,7 @@ import { TopbarComponent } from 'src/app/core/topbar/topbar.component';
 import { AuthenticatedPagesRoutingModule } from './authenticated-pages-routing.module';
 import { AuthenticatedPagesComponent } from './authenticated-pages.component';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {PanelMenuModule} from 'primeng/panelmenu';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
     SidebarModule,
     ButtonModule,
     ToolbarModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    PanelMenuModule
   ],
   providers: [
   ]
