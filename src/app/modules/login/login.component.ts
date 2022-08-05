@@ -25,17 +25,18 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.router.navigate(["home"]);
     this.form.markAllAsTouched();
     if (this.form.valid) {
-      this.authenticationService.login(this.form.value).subscribe(
-        success => {
-          this.authenticationService.setUserSession(success);
+      this.authenticationService.login(this.form.value).subscribe({
+        next: (success: any) => {
+          this.authenticationService.storeUser(success);
+          window.sessionStorage.setItem('SYSTEMID', this.authenticationService.getUserSession().access_token!);
+          this.router.navigate([''])
         },
-        error => {
+        error: () => {
           this.isLoginInvalid = true;
         }
-      )
+      })
     }
   }
 

@@ -39,17 +39,17 @@ export class CreateAccountComponent implements OnInit {
   createAccount() {
     this.form.markAllAsTouched();
     if (this.form.valid) {
-      this.userService.create(this.form.value).subscribe(
-        success => {
+      this.userService.create(this.form.value).subscribe({
+        next: () => {
           this.createSuccess = true;
           setTimeout(() => {
             this.router.navigate(["login"]);
           }, 1200)
         },
-        error => {
-          this.handlerError(error);
+        error: (err: any) => {
+          this.handlerError(err);
         }
-      )
+      })
     }
   }
 

@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
-import { User } from '../models/User';
+import { createInitialState, UserSessionStore } from '../models/auth.store';
 
 @Injectable({
   providedIn: 'root'
@@ -12,34 +12,43 @@ export class AuthenticationService {
 
   readonly _urlBase: string = `${environment.API}login`
 
-  private currentUserSubject: BehaviorSubject<User>;
-  public currentUser: Observable<User>;
-
-  constructor(private _http: HttpClient, private router: Router) {
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('userSession')!));
-    this.currentUser = this.currentUserSubject.asObservable();
-  }
-
-  public get currentUserValue(): User {
-    return this.currentUserSubject.getValue();
+  constructor(
+    private _http: HttpClient,
+    private router: Router,
+    private userSessionStore: UserSessionStore,
+    private messageService: MessageService
+  ) {
   }
 
   login(login: any) {
     return this._http.post<any>(this._urlBase, login);
   }
 
+  storeUser(usuarioAutenticado: any) {
+    this.userSessionStore._setState(usuarioAutenticado);
+  }
+
+  getUserSession() {
+    return this.userSessionStore._value();
+  }
+
+  getToken() {
+    return window.sessionStorage.getItem('SYSTEMID');
+  }
+
   checkToken() {
     return this._http.get(`${environment.API}auth/check-token`);
   }
 
-  logout() {
-    localStorage.removeItem('userSession');
-    this.router.navigate(["login"]);
+  expirarSessao() {
+    this.messageService.add({ severity: 'error', detail: 'Sessão expirada! Favor realizar login novamente' });
+    this.logout();
   }
 
-  setUserSession(user: any) {
-    localStorage.setItem('userSession', JSON.stringify(user));
-    this.currentUserSubject.next(user);
+  logout() {
+    window.sessionStorage.clear();
+    this.userSessionStore.update(createInitialState());
+    this.router.navigate(['login']);
   }
 
 }
