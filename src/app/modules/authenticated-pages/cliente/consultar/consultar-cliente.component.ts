@@ -3,19 +3,19 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { debounceTime } from 'rxjs';
-import { Produto } from 'src/app/shared/models/Produto';
+import { Cliente } from 'src/app/shared/models/Cliente';
+import { ClienteService } from 'src/app/shared/services/cliente.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
-import { ProdutoService } from 'src/app/shared/services/produto.service';
-import { CadastrarProdutoComponent } from '../cadastrar/cadastrar-produto.component';
+import { CadastrarClienteComponent } from '../cadastrar/cadastrar-cliente.component';
 
 @Component({
-  selector: 'app-consultar-produto',
-  templateUrl: './consultar-produto.component.html',
-  styleUrls: ['./consultar-produto.component.css']
+  selector: 'app-consultar-cliente',
+  templateUrl: './consultar-cliente.component.html',
+  styleUrls: ['./consultar-cliente.component.css']
 })
-export class ConsultarProdutoComponent implements OnInit {
+export class ConsultarClienteComponent implements OnInit {
 
-  produtos!: Produto[];
+  clientes!: Cliente[];
 
   page: number = 1;
 
@@ -32,7 +32,7 @@ export class ConsultarProdutoComponent implements OnInit {
   form!: FormGroup;
 
   constructor(
-    private produtoService: ProdutoService,
+    private clienteService: ClienteService,
     private messageService: MessageService,
     public dialogService: DialogService,
     public modalService: ModalService,
@@ -47,7 +47,7 @@ export class ConsultarProdutoComponent implements OnInit {
 
   initForm() {
     this.form = this.formBuilder.group({
-      descricao: [null],
+      CPF_CNPJ: [null],
     })
     this.form.valueChanges
       .pipe(debounceTime(700))
@@ -60,9 +60,9 @@ export class ConsultarProdutoComponent implements OnInit {
       this.rows = event.rows!;
     }
     this.page = (this.first / this.rows) + 1;
-    this.produtoService.pesquisar(this.form.value, this.page, this.rows).subscribe({
+    this.clienteService.pesquisar(this.form.value, this.page, this.rows).subscribe({
       next: (success: any) => {
-        this.produtos = success.content;
+        this.clientes = success.content;
         this.totalRecords = success.totalElements;
         this.first = ((this.page - 1) * this.rows);
         this.last = (this.page * this.rows) - 1;
@@ -73,10 +73,10 @@ export class ConsultarProdutoComponent implements OnInit {
     })
   }
 
-  deletar(produto: Produto) {
-    this.produtoService.delete(produto.id).subscribe({
+  deletar(cliente: Cliente) {
+    this.clienteService.delete(cliente.id).subscribe({
       complete: () => {
-        this.messageService.add({ severity: 'success', detail: 'Produto deletado com sucesso', life: 3000 });
+        this.messageService.add({ severity: 'success', detail: 'Cliente deletado com sucesso', life: 3000 });
         this.pesquisar();
       },
       error: (err: any) => {
@@ -85,10 +85,10 @@ export class ConsultarProdutoComponent implements OnInit {
     })
   }
 
-  editarProduto(produto: Produto) {
-    this.modalService.entity = produto;
-    this.modalService.ref = this.dialogService.open(CadastrarProdutoComponent, {
-      header: 'Editar Produto',
+  editarCliente(cliente: Cliente) {
+    this.modalService.entity = cliente;
+    this.modalService.ref = this.dialogService.open(CadastrarClienteComponent, {
+      header: 'Editar Cliente',
       width: '70%',
       contentStyle: { "max-height": "500px", "overflow": "auto" },
       baseZIndex: 10000
@@ -98,23 +98,23 @@ export class ConsultarProdutoComponent implements OnInit {
     });
   }
 
-  deletarProduto(produto: Produto) {
+  deletarCliente(cliente: Cliente) {
     this.confirmationService.confirm({
-      message: 'Tem certeza de que deseja excluir ' + produto.descricao + '?',
+      message: 'Tem certeza de que deseja excluir ' + cliente.nome + '?',
       header: ' ',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Sim',
       rejectLabel: 'Não',
       acceptButtonStyleClass: 'p-button-danger',
       accept: () => {
-        this.deletar(produto);
+        this.deletar(cliente);
       }
     });
   }
 
   showDialog() {
-    this.modalService.ref = this.dialogService.open(CadastrarProdutoComponent, {
-      header: 'Cadastrar Produto',
+    this.modalService.ref = this.dialogService.open(CadastrarClienteComponent, {
+      header: 'Cadastrar Cliente',
       width: '70%',
       contentStyle: { "max-height": "500px", "overflow": "auto" },
       baseZIndex: 10000

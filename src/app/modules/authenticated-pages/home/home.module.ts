@@ -5,7 +5,7 @@ import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import {CardModule} from 'primeng/card';
 import {ButtonModule} from 'primeng/button';
-
+import {DividerModule} from 'primeng/divider';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,8 @@ import {ButtonModule} from 'primeng/button';
     CommonModule,
     HomeRoutingModule,
     CardModule,
-    ButtonModule
+    ButtonModule,
+    DividerModule
   ]
 })
 export class HomeModule { }

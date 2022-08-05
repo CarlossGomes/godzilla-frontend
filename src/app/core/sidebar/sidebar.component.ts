@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { SidebarService } from 'src/app/shared/services/sidebar.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -12,29 +13,41 @@ export class SidebarComponent implements OnInit {
 
   items!: MenuItem[];
 
-  constructor() { }
+  constructor(private sidebarService: SidebarService) {
+    this.sidebarService.display.subscribe({ next: (d: boolean) => this.display = d })
+  }
 
   ngOnInit(): void {
     this.items = [
       {
+        label: 'Home',
+        icon: 'pi pi-home',
+        routerLink: '/',
+        command: ((event?: any) => this.sidebarService.hideSidebar())
+      },
+      {
         label: 'Clientes',
         icon: 'pi pi-users',
-        routerLink:'/clientes'
+        routerLink: '/clientes',
+        command: ((event?: any) => this.sidebarService.hideSidebar())
       },
       {
         label: 'Ordens de Serviço',
         icon: 'pi pi-id-card',
-        routerLink:'/ordens-servico'
+        routerLink: '/ordens-servico',
+        command: ((event?: any) => this.sidebarService.hideSidebar())
       },
       {
         label: 'Produtos',
         icon: 'pi pi-box',
-        routerLink:'/produtos'
+        routerLink: '/produtos',
+        command: ((event?: any) => this.sidebarService.hideSidebar())
       },
       {
         label: 'Relatórios',
         icon: 'pi pi-chart-bar',
-        routerLink:'/relatorios'
+        routerLink: '/relatorios',
+        command: ((event?: any) => this.sidebarService.hideSidebar())
       },
       // {
       //   label: 'Edit',
@@ -94,11 +107,6 @@ export class SidebarComponent implements OnInit {
       //   ]
       // }
     ];
-}
-
-showSidebar() {
-  this.display = true;
-}
-
+  }
 
 }
