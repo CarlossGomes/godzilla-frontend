@@ -4,6 +4,7 @@ import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api'
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { debounceTime } from 'rxjs';
 import { Cliente } from 'src/app/shared/models/Cliente';
+import { TipoPessoa } from 'src/app/shared/models/TipoPessoa';
 import { ClienteService } from 'src/app/shared/services/cliente.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 import { CadastrarClienteComponent } from '../cadastrar/cadastrar-cliente.component';
@@ -66,6 +67,7 @@ export class ConsultarClienteComponent implements OnInit {
         this.totalRecords = success.totalElements;
         this.first = ((this.page - 1) * this.rows);
         this.last = (this.page * this.rows) - 1;
+        this.maskCPFCNPJ();
       },
       error: (err: any) => {
         this.messageService.add({ severity: 'error', detail: err.error });
@@ -122,6 +124,37 @@ export class ConsultarClienteComponent implements OnInit {
     this.modalService.ref.onClose.subscribe(() => {
       this.pesquisar();
     });
+  }
+
+  maskCPFCNPJ() {
+    this.clientes.forEach(cliente => {
+      if (TipoPessoa.FISICA == cliente.tipoPessoa) {
+        cliente.cpfcnpj = this.maskCPF(cliente.cpfcnpj);
+      } else {
+        cliente.cpfcnpj = this.maskCNPJ(cliente.cpfcnpj);
+      }
+      if (cliente.telefone.length == 11) {
+        cliente.telefone = this.maskCelular(cliente.telefone)
+      } else {
+        cliente.telefone = this.maskTelefone(cliente.telefone)
+      }
+    })
+  }
+
+  maskCPF(value: string): string {
+    return value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+  }
+
+  maskCNPJ(value: string): string {
+    return value.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+  }
+
+  maskTelefone(value: string): string {
+    return value.replace(/(\d{2})(\d{4})(\d{4})/, '($1)$2-$3');
+  }
+
+  maskCelular(value: string): string {
+    return value.replace(/(\d{2})(\d{5})(\d{4})/, '($1)$2-$3');
   }
 
 }

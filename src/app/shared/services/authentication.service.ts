@@ -33,7 +33,7 @@ export class AuthenticationService {
   }
 
   getToken() {
-    return window.sessionStorage.getItem('SYSTEMID');
+    return window.localStorage.getItem('SYSTEMID');
   }
 
   checkToken() {
@@ -46,7 +46,7 @@ export class AuthenticationService {
   }
 
   logout() {
-    window.sessionStorage.clear();
+    window.localStorage.clear();
     this.userSessionStore.update(createInitialState());
     this.router.navigate(['login']);
   }

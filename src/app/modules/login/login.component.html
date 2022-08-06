@@ -5,7 +5,7 @@
                 <div class="w-15rem">
                     <div class="field">
                         <label for="email">E-mail</label>
-                        <input id="email" type="text" pInputText class="w-full" formControlName="email">
+                        <input id="email" type="email" pInputText class="w-full" formControlName="email">
                         <div *ngIf="email?.dirty || email?.touched">
                             <small *ngIf="email?.errors?.['required']" id="name-help" class="p-error">Favor insira um
                                 e-mail

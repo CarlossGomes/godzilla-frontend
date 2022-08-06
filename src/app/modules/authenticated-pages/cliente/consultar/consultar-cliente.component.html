@@ -1,10 +1,11 @@
 <p-confirmDialog></p-confirmDialog>
 <p-card styleClass="pcard">
     <p class="text-center text-3xl m-auto font-bold">Consultar Clientes</p>
-    <p-table [rowHover]="true" (onLazyLoad)="pesquisar($event)" [lazy]="true" [resizableColumns]="true"
-        [value]="clientes" [paginator]="true" [rows]="rows" [first]="first" [totalRecords]="totalRecords"
-        [showCurrentPageReport]="false" currentPageReportTemplate="{totalRecords} registros"
-        [rowsPerPageOptions]="[10,25,50]" styleClass="p-datatable-striped pcard" responsiveLayout="scroll">
+    <p-table [showLoader]="true" [rowHover]="true" (onLazyLoad)="pesquisar($event)" [lazy]="true"
+        [resizableColumns]="true" [value]="clientes" [paginator]="true" [rows]="rows" [first]="first"
+        [totalRecords]="totalRecords" [showCurrentPageReport]="false"
+        currentPageReportTemplate="{totalRecords} registros" [rowsPerPageOptions]="[10,25,50]"
+        styleClass="p-datatable-striped pcard" responsiveLayout="scroll">
         <ng-template pTemplate="caption">
             <div class="grid">
                 <div class="flex justify-content-start col">
@@ -25,16 +26,19 @@
             <tr>
                 <th>Nome</th>
                 <th>Telefone</th>
+                <th>E-mail</th>
                 <th>CPF/CNPJ</th>
+                <th>Tipo Pessoa</th>
                 <th></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-cliente>
             <tr>
                 <td>{{cliente.nome}}</td>
-                <td>{{cliente.telefone}}</td>
+                <td><a class="no-underline" href="tel:{{cliente.telefone}}">{{cliente.telefone}}</a></td>
                 <td>{{cliente.email}}</td>
-                <td>{{cliente.CPF_CNPJ}}</td>
+                <td>{{cliente.tipoPessoa}}</td>
+                <td class="select-all">{{cliente.cpfcnpj}}</td>
                 <td class="text-center">
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-text p-button-info mr-1"
                         (click)="editarCliente(cliente)"></button>

@@ -9,13 +9,21 @@
                     obrigatório.</small>
             </div>
         </div>
-        <div class="field col-12 md:col-6">
-            <label for="cpf_cnpj">CPF/CNPJ</label>
-            <p-inputMask [mask]="mask" [size]="15" [unmask]="true" id="cpf_cnpj" formControlName="CPF_CNPJ"
+        <div class="field col-12 md:col-2">
+            <label for="tipoPessoa">Tipo Pessoa</label>
+            <p-dropdown (onChange)="changeMask()" [options]="tiposPessoa" formControlName="tipoPessoa"></p-dropdown>
+            <div *ngIf="tipoPessoa?.dirty || tipoPessoa?.touched">
+                <small *ngIf="tipoPessoa?.errors?.['required']" id="tipoPessoa-help" class="p-error">Campo Tipo Pessoa
+                    obrigatório.</small>
+            </div>
+        </div>
+        <div class="field col-12 md:col-4">
+            <label for="cpfcnpj">CPF/CNPJ</label>
+            <p-inputMask [mask]="mask" type="tel" [size]="15" [unmask]="true" id="cpfcnpj" formControlName="cpfcnpj"
                 class="text-base text-color surface-border border-round appearance-none outline-none focus:border-primary w-full">
             </p-inputMask>
-            <div *ngIf="CPF_CNPJ?.dirty || CPF_CNPJ?.touched">
-                <small *ngIf="CPF_CNPJ?.errors?.['required']" id="cpf_cnpj-help" class="p-error">Campo CPF/CNPJ
+            <div *ngIf="cpfcnpj?.dirty || cpfcnpj?.touched">
+                <small *ngIf="cpfcnpj?.errors?.['required']" id="cpfcnpj-help" class="p-error">Campo CPF/CNPJ
                     obrigatório.</small>
             </div>
         </div>
@@ -23,9 +31,8 @@
     <div class="p-fluid formgrid grid">
         <div class="field col-12 md:col-6">
             <label for="telefone">Telefone</label>
-            <p-inputMask mask="(99)-99999-9999" [unmask]="true" id="telefone" formControlName="telefone"
+            <input pInputText maxlength="11" type="tel" id="telefone" formControlName="telefone"
                 class="text-base text-color surface-border border-round appearance-none outline-none focus:border-primary w-full">
-            </p-inputMask>
             <div *ngIf="telefone?.dirty || telefone?.touched">
                 <small *ngIf="telefone?.errors?.['required']" id="telefone-help" class="p-error">Campo telefone
                     obrigatório.</small>

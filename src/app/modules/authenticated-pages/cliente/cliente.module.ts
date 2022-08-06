@@ -15,6 +15,7 @@ import { CadastrarClienteComponent } from './cadastrar/cadastrar-cliente.compone
 import { InputMaskModule } from 'primeng/inputmask';
 import { ClienteRoutingModule } from './cliente-routing.module';
 import { ConsultarClienteComponent } from './consultar/consultar-cliente.component';
+import {DropdownModule} from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ConsultarClienteComponent } from './consultar/consultar-cliente.compone
     TableModule,
     DynamicDialogModule,
     ConfirmDialogModule,
-    InputMaskModule
+    InputMaskModule,
+    DropdownModule
   ],
   providers: [
     DialogService,

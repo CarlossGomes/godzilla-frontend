@@ -13,12 +13,20 @@ export class TopbarComponent implements OnInit {
   isDarkMode: boolean = true
 
   constructor(
-    private authenticationService: AuthenticationService, 
+    private authenticationService: AuthenticationService,
     private themeService: ThemeService,
-    private sidebarService:SidebarService
-    ) { }
+    private sidebarService: SidebarService
+  ) { }
 
   ngOnInit(): void {
+    this.initTheme();
+  }
+
+  initTheme() {
+    const theme = window.localStorage.getItem('theme');
+    if (theme) {
+      this.changeTheme(theme);
+    }
   }
 
   logout() {
@@ -30,6 +38,7 @@ export class TopbarComponent implements OnInit {
   }
 
   changeTheme(theme: string) {
+    window.localStorage.setItem('theme', theme);
     this.isDarkMode = theme == 'vela-blue';
     this.themeService.switchTheme(theme);
   }

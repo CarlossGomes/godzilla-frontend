@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Cliente } from 'src/app/shared/models/Cliente';
+import { TipoPessoa } from 'src/app/shared/models/TipoPessoa';
 import { ClienteService } from 'src/app/shared/services/cliente.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 
@@ -17,6 +18,8 @@ export class CadastrarClienteComponent implements OnInit, OnDestroy {
   cliente: Cliente = this.modalService.entity;
 
   mask: string = '999.999.999-99';
+
+  tiposPessoa = Object.values(TipoPessoa);
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,8 +41,9 @@ export class CadastrarClienteComponent implements OnInit, OnDestroy {
     this.form = this.formBuilder.group({
       id: [cliente ? cliente.id : null],
       nome: [cliente ? cliente.nome : null, Validators.required],
-      CPF_CNPJ: [cliente ? cliente.CPF_CNPJ : null, Validators.required],
+      cpfcnpj: [cliente ? cliente.cpfcnpj : '', Validators.required],
       telefone: [cliente ? cliente.telefone : null, [Validators.required]],
+      tipoPessoa: [cliente ? cliente.tipoPessoa : TipoPessoa.FISICA, [Validators.required]],
       email: [cliente ? cliente.email : null]
     })
   }
@@ -75,7 +79,7 @@ export class CadastrarClienteComponent implements OnInit, OnDestroy {
   }
 
   changeMask() {
-    this.mask ='99.999.999/9999-99' 
+    this.mask = this.tipoPessoa!.value == TipoPessoa.JURIDICA ? '99.999.999/9999-99' : '999.999.999-99';
   }
 
   limpar() {
@@ -83,8 +87,9 @@ export class CadastrarClienteComponent implements OnInit, OnDestroy {
   }
 
   get nome() { return this.form.get('nome'); }
-  get CPF_CNPJ() { return this.form.get('CPF_CNPJ'); }
+  get cpfcnpj() { return this.form.get('cpfcnpj'); }
   get telefone() { return this.form.get('telefone'); }
+  get tipoPessoa() { return this.form.get('tipoPessoa'); }
   get email() { return this.form.get('email'); }
 
 

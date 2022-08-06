@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
       this.authenticationService.login(this.form.value).subscribe({
         next: (success: any) => {
           this.authenticationService.storeUser(success);
-          window.sessionStorage.setItem('SYSTEMID', this.authenticationService.getUserSession().access_token!);
+          window.localStorage.setItem('SYSTEMID', this.authenticationService.getUserSession().access_token!);
           this.router.navigate([''])
         },
         error: () => {
