@@ -13,4 +13,12 @@ export class UserService extends CrudService<User, number> {
     super(_http, `${environment.API}users`);
   }
 
+  resetPassword(email: string) {
+    return this._http.post(`${this._url}/reset-password?email=` + email, {});
+  }
+
+  changePassword(token: string, form: any) {
+    return this._http.post(`${this._url}/change-password?token=` + token, form);
+  }
+
 }
