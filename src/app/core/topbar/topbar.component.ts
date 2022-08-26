@@ -24,6 +24,7 @@ export class TopbarComponent implements OnInit {
 
   initTheme() {
     const theme = window.localStorage.getItem('theme');
+    this.isDarkMode = this.themeService.theme.href.includes('vela-blue');
     if (theme) {
       this.changeTheme(theme);
     }

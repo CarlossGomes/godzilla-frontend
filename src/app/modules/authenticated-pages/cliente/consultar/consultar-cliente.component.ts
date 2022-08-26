@@ -49,6 +49,7 @@ export class ConsultarClienteComponent implements OnInit {
   initForm() {
     this.form = this.formBuilder.group({
       CPF_CNPJ: [null],
+      nome: [null]
     })
     this.form.valueChanges
       .pipe(debounceTime(700))
@@ -70,7 +71,6 @@ export class ConsultarClienteComponent implements OnInit {
         this.maskCPFCNPJ();
       },
       error: (err: any) => {
-        this.messageService.add({ severity: 'error', detail: err.error });
       }
     })
   }

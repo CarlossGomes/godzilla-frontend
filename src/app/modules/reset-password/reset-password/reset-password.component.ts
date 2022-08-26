@@ -39,6 +39,9 @@ export class ResetPasswordComponent implements OnInit {
       this.userService.resetPassword(this.email!.value).subscribe({
         next: () => {
           this.messageService.add({ severity: 'success', detail: 'E-mail de recuperação enviado com sucesso.', life: 3000 });
+          setTimeout(() => {
+            this.goToLogin();
+          }, 1200)
         },
         error: (err: any) => {
           this.handleError(err)

@@ -68,7 +68,6 @@ export class ConsultarProdutoComponent implements OnInit {
         this.last = (this.page * this.rows) - 1;
       },
       error: (err: any) => {
-        this.messageService.add({ severity: 'error', detail: err.error });
       }
     })
   }

@@ -6,6 +6,8 @@ import { Inject, Injectable } from '@angular/core';
 })
 export class ThemeService {
 
+  theme = this.document.getElementById('app-theme') as HTMLLinkElement;
+
   constructor(@Inject(DOCUMENT) private document: Document) { }
 
   switchTheme(theme: string) {
