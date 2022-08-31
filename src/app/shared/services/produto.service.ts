@@ -12,5 +12,9 @@ export class ProdutoService extends CrudService<Produto, number> {
   constructor(protected override _http: HttpClient) {
     super(_http, `${environment.API}produtos`);
   }
-  
+
+  getListDTO() {
+    return this._http.get<Produto[]>(`${this._url}/list-dto`);
+  }
+
 }

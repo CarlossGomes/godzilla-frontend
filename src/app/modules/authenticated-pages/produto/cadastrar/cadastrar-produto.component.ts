@@ -44,7 +44,7 @@ export class CadastrarProdutoComponent implements OnInit, OnDestroy {
     })
   }
 
-  cadastrarProduto() {
+  cadastrar() {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       this.produtoService.create(this.form.value).subscribe({
@@ -59,10 +59,10 @@ export class CadastrarProdutoComponent implements OnInit, OnDestroy {
     }
   }
 
-  editarProduto() {
+  editar() {
     this.form.markAllAsTouched();
     if (this.form.valid) {
-      this.produtoService.edit(this.produto.id, this.form.value).subscribe({
+      this.produtoService.edit(this.produto.id!, this.form.value).subscribe({
         complete: () => {
           this.messageService.add({ severity: 'success', detail: 'Produto editado com sucesso.', life: 3000 });
           this.modalService.ref!.close();

@@ -76,7 +76,7 @@ export class ConsultarClienteComponent implements OnInit {
   }
 
   deletar(cliente: Cliente) {
-    this.clienteService.delete(cliente.id).subscribe({
+    this.clienteService.delete(cliente.id!).subscribe({
       complete: () => {
         this.messageService.add({ severity: 'success', detail: 'Cliente deletado com sucesso', life: 3000 });
         this.pesquisar();
@@ -129,14 +129,14 @@ export class ConsultarClienteComponent implements OnInit {
   maskCPFCNPJ() {
     this.clientes.forEach(cliente => {
       if (TipoPessoa.FISICA == cliente.tipoPessoa) {
-        cliente.cpfcnpj = this.maskCPF(cliente.cpfcnpj);
+        cliente.cpfcnpj = this.maskCPF(cliente.cpfcnpj!);
       } else {
-        cliente.cpfcnpj = this.maskCNPJ(cliente.cpfcnpj);
+        cliente.cpfcnpj = this.maskCNPJ(cliente.cpfcnpj!);
       }
-      if (cliente.telefone.length == 11) {
-        cliente.telefone = this.maskCelular(cliente.telefone)
+      if (cliente.telefone!.length == 11) {
+        cliente.telefone = this.maskCelular(cliente.telefone!)
       } else {
-        cliente.telefone = this.maskTelefone(cliente.telefone)
+        cliente.telefone = this.maskTelefone(cliente.telefone!)
       }
     })
   }

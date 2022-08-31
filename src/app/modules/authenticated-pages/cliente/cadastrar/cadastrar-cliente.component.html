@@ -1,4 +1,4 @@
-<form [formGroup]="form" (keyup.enter)="cadastrarCliente()">
+<form [formGroup]="form">
     <div class="p-fluid formgrid grid">
         <div class="field col-12 md:col-6">
             <label for="nome">Nome</label>
@@ -31,8 +31,9 @@
     <div class="p-fluid formgrid grid">
         <div class="field col-12 md:col-6">
             <label for="telefone">Telefone</label>
-            <input pInputText maxlength="11" type="tel" id="telefone" formControlName="telefone"
+            <p-inputNumber [format]="false" [maxlength]="11" id="telefone" formControlName="telefone"
                 class="text-base text-color surface-border border-round appearance-none outline-none focus:border-primary w-full">
+            </p-inputNumber>
             <div *ngIf="telefone?.dirty || telefone?.touched">
                 <small *ngIf="telefone?.errors?.['required']" id="telefone-help" class="p-error">Campo telefone
                     obrigatório.</small>
@@ -45,13 +46,13 @@
         </div>
     </div>
 </form>
-<div class="grid">
+<div class="grid mt-2">
     <div class="flex justify-content-end col">
         <button pButton pRipple type="button" label="Limpar" class="p-button-danger p-button-raised mr-2"
             (click)="limpar()"></button>
         <button *ngIf="!cliente" pButton pRipple type="button" label="Cadastrar" class="p-button-info p-button-raised"
-            (click)="cadastrarCliente()"></button>
+            (click)="cadastrar()"></button>
         <button *ngIf="cliente" pButton pRipple type="button" label="Salvar" class="p-button-info p-button-raised"
-            (click)="editarCliente()"></button>
+            (click)="editar()"></button>
     </div>
 </div>

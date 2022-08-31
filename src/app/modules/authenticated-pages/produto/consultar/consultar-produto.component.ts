@@ -73,7 +73,7 @@ export class ConsultarProdutoComponent implements OnInit {
   }
 
   deletar(produto: Produto) {
-    this.produtoService.delete(produto.id).subscribe({
+    this.produtoService.delete(produto.id!).subscribe({
       complete: () => {
         this.messageService.add({ severity: 'success', detail: 'Produto deletado com sucesso', life: 3000 });
         this.pesquisar();

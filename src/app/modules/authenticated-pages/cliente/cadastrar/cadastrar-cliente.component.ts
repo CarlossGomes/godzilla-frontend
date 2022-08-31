@@ -48,7 +48,7 @@ export class CadastrarClienteComponent implements OnInit, OnDestroy {
     })
   }
 
-  cadastrarCliente() {
+  cadastrar() {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       this.clienteService.create(this.form.value).subscribe({
@@ -63,10 +63,10 @@ export class CadastrarClienteComponent implements OnInit, OnDestroy {
     }
   }
 
-  editarCliente() {
+  editar() {
     this.form.markAllAsTouched();
     if (this.form.valid) {
-      this.clienteService.edit(this.cliente.id, this.form.value).subscribe({
+      this.clienteService.edit(this.cliente.id!, this.form.value).subscribe({
         complete: () => {
           this.messageService.add({ severity: 'success', detail: 'Cliente editado com sucesso.', life: 3000 });
           this.modalService.ref!.close();

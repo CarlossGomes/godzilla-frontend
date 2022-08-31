@@ -1,4 +1,4 @@
-<form [formGroup]="form" (keyup.enter)="cadastrarProduto()">
+<form [formGroup]="form">
     <div class="p-fluid formgrid grid">
         <div class="field col-12 md:col-6">
             <label for="descricao">Descrição</label>
@@ -41,13 +41,13 @@
         </div>
     </div>
 </form>
-<div class="grid">
+<div class="grid mt-2">
     <div class="flex justify-content-end col">
         <button pButton pRipple type="button" label="Limpar" class="p-button-danger p-button-raised mr-2"
             (click)="limpar()"></button>
         <button *ngIf="!produto" pButton pRipple type="button" label="Cadastrar"
-            class="p-button-info p-button-raised" (click)="cadastrarProduto()"></button>
+            class="p-button-info p-button-raised" (click)="cadastrar()"></button>
         <button *ngIf="produto" pButton pRipple type="button" label="Salvar" class="p-button-info p-button-raised"
-            (click)="editarProduto()"></button>
+            (click)="editar()"></button>
     </div>
 </div>
