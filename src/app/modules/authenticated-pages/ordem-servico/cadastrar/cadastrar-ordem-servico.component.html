@@ -4,24 +4,24 @@
         <div class="p-fluid formgrid grid">
             <div class="field col-12 md:col-3">
                 <label for="id">Nº OS</label>
-                <input pInputText id="id" type="text" formControlName="id"
+                <input [readonly]="true" pInputText id="id" type="text" formControlName="id"
                     class="text-base text-color p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
             </div>
             <div class="field col-12 md:col-3">
                 <label for="dataInicio">Data Início</label>
-                <p-inputMask id="dataInicio" mask="99/99/9999 99:99" formControlName="dataInicio"
+                <p-inputMask slotChar="dd/mm/yyyy" [readonly]="true" id="dataInicio" mask="99/99/9999 99:99" formControlName="dataInicio"
                     class="text-base text-color p-2 surface-border border-round appearance-none outline-none focus:border-primary w-full">
                 </p-inputMask>
             </div>
             <div class="field col-12 md:col-3">
                 <label for="dataFim">Data Fim</label>
-                <p-inputMask id="dataFim" mask="99/99/9999 99:99" formControlName="dataFim"
+                <p-inputMask [readonly]="true" id="dataFim" mask="99/99/9999 99:99" formControlName="dataFim"
                     class="text-base text-color p-2 surface-border border-round appearance-none outline-none focus:border-primary w-full">
                 </p-inputMask>
             </div>
             <div class="field col-12 md:col-3">
-                <label for="dataFim">Status OS</label>
-                <p-dropdown formControlName="statusOrdemServico" id="statusOrdemServico" [options]="status"
+                <label  for="dataFim">Status OS</label>
+                <p-dropdown [readonly]="true" formControlName="statusOrdemServico" id="statusOrdemServico" [options]="status"
                     class="text-base text-color p-2 surface-border border-round appearance-none outline-none focus:border-primary w-full">
                 </p-dropdown>
             </div>
@@ -93,7 +93,7 @@
         </div>
         <p-card>
             <p class="text-center text-2xl m-auto font-bold">Produtos OS</p>
-            <p-table [value]="produtosOrdemServico" [rowHover]="true" [lazy]="true" [resizableColumns]="true"
+            <p-table [value]="produtosOrdemServico.value" [rowHover]="true" [lazy]="true" [resizableColumns]="true"
                 styleClass="p-datatable-striped pcard" responsiveLayout="scroll">
                 <ng-template pTemplate="header">
                     <tr>
@@ -131,8 +131,13 @@
                                 (click)="addProdutoList()"></button>
                         </th>
                     </tr>
+                    <div *ngIf="produtosOrdemServico?.dirty || produtosOrdemServico?.touched">
+                        <small *ngIf="produtosOrdemServico?.errors?.['required']" id="produtosOrdemServico-help"
+                            class="p-error">Campo placa
+                            obrigatório.</small>
+                    </div>
                 </ng-template>
-                <ng-template pTemplate="body" let-produtoOS>
+                <ng-template pTemplate="body" let-produtoOS let-rowIndex="rowIndex">
                     <tr>
                         <td class="text-center">{{produtoOS.id}}</td>
                         <td class="text-center">{{produtoOS.descricao}}</td>
@@ -140,15 +145,15 @@
                         <td class="text-center">{{produtoOS.valor | currency:'BRL'}}</td>
                         <td class="text-center">
                             <button pButton pRipple icon="pi pi-trash" class="p-button-text p-button-danger"
-                                (click)="removeProdutoList(produtoOS)"></button>
+                                (click)="removeProdutoList(rowIndex)"></button>
                         </td>
                     </tr>
                 </ng-template>
-                <!-- <ng-template pTemplate="summary">
-                <div class="flex align-items-center justify-content-end">
-                    {{totalRecords}} registro(s)
-                </div>
-            </ng-template> -->
+                <ng-template pTemplate="summary">
+                    <div class="flex align-items-center justify-content-end">
+                        Total: {{total!.value | currency:'BRL'}}
+                    </div>
+                </ng-template>
             </p-table>
         </p-card>
     </form>

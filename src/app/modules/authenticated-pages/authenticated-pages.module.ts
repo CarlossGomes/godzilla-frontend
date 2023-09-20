@@ -9,8 +9,8 @@ import { SidebarComponent } from 'src/app/core/sidebar/sidebar.component';
 import { TopbarComponent } from 'src/app/core/topbar/topbar.component';
 import { AuthenticatedPagesRoutingModule } from './authenticated-pages-routing.module';
 import { AuthenticatedPagesComponent } from './authenticated-pages.component';
-import {ProgressSpinnerModule} from 'primeng/progressspinner';
-import {PanelMenuModule} from 'primeng/panelmenu';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { PanelMenuModule } from 'primeng/panelmenu';
 
 @NgModule({
   declarations: [

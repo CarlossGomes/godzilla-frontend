@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { OrdemServico } from 'src/app/shared/models/OrdemServico';
@@ -25,8 +25,6 @@ export class CadastrarOrdemServicoComponent implements OnInit {
 
   produtoOrdemServico?: ProdutoOrdemServico = new ProdutoOrdemServico();
 
-  produtosOrdemServico: ProdutoOrdemServico[] = [];
-
   produtos!: Produto[];
 
   produto?: Produto;
@@ -46,17 +44,19 @@ export class CadastrarOrdemServicoComponent implements OnInit {
 
   initForm() {
     this.form = this.formBuilder.group({
-      id: [{ value: null, disabled: true }],
-      dataInicio: [{ value: formatDate(new Date(), 'dd/MM/yyyy HH:mm', 'en'), disabled: true }],
-      dataFim: [{ value: null, disabled: true }],
+      id: [null],
+      dataInicio: [new Date()],
+      dataFim: [null],
       descricao: [null, Validators.required],
       nomeCliente: [null, Validators.required],
       telefoneCliente: [null, Validators.required],
       placa: [null, Validators.required],
       marca: [null, Validators.required],
       modelo: [null, Validators.required],
-      total: [null],
-      statusOrdemServico: [{ value: StatusOrdemServico.ABERTO, disabled: true }],
+      total: [0],
+      statusOrdemServico: [StatusOrdemServico.ABERTO],
+      produtosOrdemServico: this.formBuilder.array([
+      ], Validators.required)
     })
   }
 
@@ -100,18 +100,31 @@ export class CadastrarOrdemServicoComponent implements OnInit {
   }
 
   addProdutoList() {
-    if(this.produto?.id){
+    const produto = this.produtosOrdemServico.controls.find(produto => produto.value.id == this.produto!.id);
+    produto == undefined ? '' : this.messageService.add({ severity: 'error', detail: `Já existe ${this.produto?.descricao} na lista de produtos` });
+    if (this.produto?.id && produto == undefined) {
       this.produtoOrdemServico!.id = this.produto?.id;
       this.produtoOrdemServico!.descricao = this.produto?.descricao;
       this.produtoOrdemServico!.valor = (this.produto?.valor! * (1 + (this.produto?.margem! / 100))) * this.produtoOrdemServico?.quantidade!;
-      this.produtosOrdemServico.push(this.produtoOrdemServico!);
-      this.produto = new Produto();
+      this.produtosOrdemServico.push(this.newProdutoOrdemServico(this.produtoOrdemServico!))
+      this.form.patchValue({ total: Number(Number(this.total!.value) + Number(this.produtoOrdemServico?.valor!)).toFixed(2) })
+      this.produto = undefined;
       this.produtoOrdemServico = new ProdutoOrdemServico();
     }
   }
 
-  removeProdutoList(produtoOrdemServico: ProdutoOrdemServico) {
-    this.produtosOrdemServico.splice(this.produtosOrdemServico.indexOf(produtoOrdemServico), 1);
+  newProdutoOrdemServico(produtoOrdemServico: ProdutoOrdemServico): FormGroup {
+    return this.formBuilder.group({
+      id: produtoOrdemServico.id,
+      descricao: produtoOrdemServico.descricao,
+      quantidade: produtoOrdemServico.quantidade,
+      valor: produtoOrdemServico.valor
+    })
+  }
+
+  removeProdutoList(index: number) {
+    this.form.patchValue({ total: Number(Number(this.total!.value) - Number(this.produtosOrdemServico.at(index).value.valor)).toFixed(2) })
+    this.produtosOrdemServico.removeAt(index);
   }
 
   limpar() {
@@ -133,5 +146,7 @@ export class CadastrarOrdemServicoComponent implements OnInit {
   get placa() { return this.form.get('placa'); }
   get marca() { return this.form.get('marca'); }
   get modelo() { return this.form.get('modelo'); }
+  get total() { return this.form.get('total'); }
+  get produtosOrdemServico(): FormArray { return this.form.get("produtosOrdemServico") as FormArray }
 
 }
